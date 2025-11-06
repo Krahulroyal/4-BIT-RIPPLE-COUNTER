@@ -1,4 +1,6 @@
 # 4-BIT-RIPPLE-COUNTER
+# Developed by: K Rahul Royal
+# Register Number: 212224240126
 
 *AIM:*
 
@@ -23,51 +25,60 @@ In timing diagram Q0 is changing as soon as the negative edge of clock pulse is 
 ![image](https://github.com/naavaneetha/4-BIT-RIPPLE-COUNTER/assets/154305477/85e1958a-2fc1-49bb-9a9f-d58ccbf3663c)
 
 *Procedure*
+1.Code Overview: Understand the Verilog module ripple_counter, which includes clock (clk) and reset (rst) inputs, and a 4-bit output count. The counter increments on each positive clock edge unless reset is asserted, resetting the count to 0.
+2.Simulation Preparation: Use a Verilog simulator (e.g., ModelSim) and write a testbench module to apply clock and reset signals while monitoring the counter output.
+3.estbench Implementation: Instantiate the ripple_counter module in the testbench, generate clock and reset signals, apply them to the counter module, and observe the count output.
+4.Simulation Execution: Compile both the counter module and the testbench, simulate the design, and verify that the counter counts from 0 to 15 (binary 1111) and resets to 0 when the reset signal is activated.
+5.verification and Debugging: Analyze timing diagrams to ensure proper counter behavior, debug any encountered issues during simulation, and make necessary modifications to the design for optimal functionality.
 
+Program for 4 Bit Ripple Counter and verify its truth table in quartus using Verilog programming.
 
-**1.Increment count on each positive edge of the clock. 
+**Program**
 
+module Exp_12 (
+    input clk,      // Clock input
+    input reset,    // Reset input (active high)
+    output [3:0] q  // 4-bit output
+);
 
-2.Reset count to zero when it reaches 15. 
+    reg [3:0] q_int;
 
+    // Assign internal register to output
+    assign q = q_int;
 
-3.Generate clock signal (clk).
+    // First flip-flop toggles with main clock
+    always @(posedge clk) begin
+        if (reset)
+            q_int[0] <= 1'b0;       // Reset first bit
+        else
+            q_int[0] <= ~q_int[0];  // Toggle first bit
+    end
 
+    // Generate remaining flip-flops
+    genvar i;
+    generate
+        for (i = 1; i < 4; i = i + 1) begin : ripple
+            always @(negedge q_int[i-1] or posedge reset) begin
+                if (reset)
+                    q_int[i] <= 1'b0;       // Reset bit
+                else
+                    q_int[i] <= ~q_int[i];  // Toggle bit on previous bit’s clock
+            end
+        end
+    endgenerate
 
-4.Instantiate the RippleCounter module.
-
-
-5.Conduct functional testing by displaying the count at each clock cycle for 16 cycles.**
-
-
-*PROGRAM*
-
-## Developed by: K Rahul Royal ##
-## RegisterNumber:212224240126 ##
-
-
-module EX12(clk, rst, count);
-input wire clk;
-input wire rst;
-output reg [3:0] count;
-
-always @(posedge clk or posedge rst)
-begin
-	if(rst)
-		count <= 4'b0000;
-	else
-		count <= count + 1;
-end
 endmodule
 
 
 *RTL LOGIC FOR 4 Bit Ripple Counter*
 
-<img width="1919" height="1199" alt="Screenshot 2025-11-04 142234" src="https://github.com/user-attachments/assets/c2eb173d-543c-468e-8d38-934171045d08" />
+![Screenshot 2024-12-17 131636](https://github.com/user-attachments/assets/257cb979-a39c-4c97-9dd8-daa213a1f8b8)
 
 *TIMING DIGRAMS FOR 4 Bit Ripple Counter*
 
-<img width="1916" height="1199" alt="Screenshot 2025-11-04 142624" src="https://github.com/user-attachments/assets/fe2c3099-2f04-4d3e-8f0a-0ec09a84ee9b" />
+<img width="1280" height="759" alt="image" src="https://github.com/user-attachments/assets/475776e6-cf63-412f-bebb-8a21f205e4e0" />
 
-*RESULTS:*
-Program executed successfully.
+
+  
+*RESULTS*
+Thus the code is executed successfully

@@ -42,8 +42,8 @@ In timing diagram Q0 is changing as soon as the negative edge of clock pulse is 
 
 *PROGRAM*
 
-Developed by: K Rahul Royal
-RegisterNumber:212224240126
+## Developed by: K Rahul Royal ##
+## RegisterNumber:212224240126 ##
 
 
 module EX12(clk, rst, count);
